@@ -68,7 +68,7 @@ export default function Home() {
     socket.emit("join_room", { slug });
   };
 
-  console.log(room, mapUser(room?.createdBy || ""));
+  console.log(userMap, room, mapUser(room?.createdBy || ""));
 
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
