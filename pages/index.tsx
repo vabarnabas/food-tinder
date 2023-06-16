@@ -22,7 +22,7 @@ export default function Home() {
   const [userMap, setUserMap] = useState<Record<string, string>>({});
 
   function mapUser(socketId: string) {
-    return userMap[socketId];
+    return userMap?.[socketId];
   }
 
   useEffect(() => {
