@@ -19,6 +19,11 @@ export default function Home() {
   const [roomIdInput, setRoomIdInput] = useState("");
   const [roomId, setRoomId] = useState("");
   const [room, setRoom] = useState<Room | undefined>(undefined);
+  const [userMap, setUserMap] = useState<Record<string, string>>({});
+
+  function mapUser(socketId: string) {
+    return userMap[socketId];
+  }
 
   useEffect(() => {
     function onRoomCreated({ slug }: { slug: string }) {
@@ -31,8 +36,15 @@ export default function Home() {
       setState(ScreenState.IN_ROOM);
     }
 
-    function onRoomReceived({ room }: { room: Room }) {
+    function onRoomReceived({
+      room,
+      userMap,
+    }: {
+      room: Room;
+      userMap: Record<string, string>;
+    }) {
       setRoom(room);
+      setUserMap(userMap);
     }
 
     socket.on("room_created", onRoomCreated);
@@ -56,10 +68,12 @@ export default function Home() {
     socket.emit("join_room", { slug });
   };
 
+  console.log(room, mapUser(room?.createdBy || ""));
+
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center">
       {state === ScreenState.BASE ? (
-        <div className="flex flex-col items-center justify-center gap-y-2 w-max">
+        <div className="flex flex-col items-center justify-center gap-y-2 w-max min-w-[20rem]">
           <button
             className="bg-emerald-500 text-white px-3 py-1 hover:bg-emerald-600 rounded-lg w-full"
             onClick={() => {
@@ -80,7 +94,7 @@ export default function Home() {
               joinRoom(roomIdInput);
               setRoomIdInput("");
             }}
-            className="flex flex-col gap-y-2"
+            className="flex flex-col gap-y-2 w-full"
           >
             <input
               value={roomIdInput}
@@ -94,28 +108,28 @@ export default function Home() {
           </form>
         </div>
       ) : null}
-      {state === ScreenState.IN_ROOM ? (
-        <div className="">
+      {state === ScreenState.IN_ROOM && userMap ? (
+        <div className="min-w-[20rem]">
           <p className="mb-0.5 text-sm font-semibold">Room Code</p>
           <p className="select-all flex items-center justify-center text-2xl font-bold px-3 py-2 rounded-lg bg-slate-50">
             {roomId}
           </p>
           <div className="">
             <p className="mb-0.5 text-sm mt-1 font-semibold">My ID</p>
-            <p className="bg-slate-50 px-3 font-semibold py-1 rounded-lg">
-              {socket.id}
+            <p className="bg-slate-50 px-3 font-semibold py-1 rounded-lg flex items-center justify-center">
+              {mapUser(socket.id)}
             </p>
           </div>
           <p className="mb-0.5 text-sm mt-4 font-semibold">Users</p>
-          <div className="">
+          <div className="grid grid-cols-2 gap-2">
             {room &&
               Object.keys(room.likedPlaces).map((user) => (
-                <div key={user} className="text-sm">
+                <div key={user} className="text-sm text-center">
                   {user}
                 </div>
               ))}
           </div>
-          {room?.createdBy === socket.id ? (
+          {room?.createdBy === mapUser(socket.id) ? (
             <button className="bg-emerald-500 mt-4 text-white px-3 py-1 w-full hover:bg-emerald-600 rounded-lg">
               Start
             </button>
