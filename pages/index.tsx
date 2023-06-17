@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
-import { socket } from "@/helpers/socket";
-import useSocket from "@/hooks/useSocket";
+import { socket } from "@/helpers/socket"
+import useSocket from "@/hooks/useSocket"
 
 export default function Home() {
-  const [roomIdInput, setRoomIdInput] = useState("");
+  const [roomIdInput, setRoomIdInput] = useState("")
 
-  const { createRoom, joinRoom } = useSocket(socket);
+  const { createRoom, joinRoom } = useSocket(socket)
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center">
@@ -14,8 +14,8 @@ export default function Home() {
         <button
           className="w-full rounded-lg bg-emerald-500 px-3 py-1 text-white hover:bg-emerald-600"
           onClick={() => {
-            socket.connect();
-            createRoom();
+            socket.connect()
+            createRoom()
           }}
         >
           Create a Room
@@ -26,10 +26,10 @@ export default function Home() {
         </div>
         <form
           onSubmit={(e) => {
-            e.preventDefault();
-            socket.connect();
-            joinRoom(roomIdInput);
-            setRoomIdInput("");
+            e.preventDefault()
+            socket.connect()
+            joinRoom(roomIdInput)
+            setRoomIdInput("")
           }}
           className="flex w-full flex-col gap-y-2"
         >
@@ -45,5 +45,5 @@ export default function Home() {
         </form>
       </div>
     </div>
-  );
+  )
 }
