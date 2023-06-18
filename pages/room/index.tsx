@@ -4,6 +4,7 @@ import React, { useEffect } from "react"
 import { socket } from "@/helpers/socket"
 import useSocket from "@/hooks/useSocket"
 import useDataStore from "@/stores/data.store"
+import Layout from "@/components/layout/layout"
 
 export default function Room() {
   const {
@@ -26,7 +27,7 @@ export default function Room() {
   if (!Object.keys(room).length) return null
 
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center">
+    <Layout>
       <div className="w-[20rem]">
         <p className="mb-0.5 text-sm font-semibold">Room Code</p>
         <p className="flex select-all items-center justify-center rounded-lg bg-slate-50 px-3 py-2 text-2xl font-bold">
@@ -53,6 +54,6 @@ export default function Room() {
           </button>
         ) : null}
       </div>
-    </div>
+    </Layout>
   )
 }
