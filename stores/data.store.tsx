@@ -1,5 +1,6 @@
-import { Room } from "@/types/room.types"
 import { create } from "zustand"
+
+import { Room } from "@/types/room.types"
 
 interface DataStore {
   data: {

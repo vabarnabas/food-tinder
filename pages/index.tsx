@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 
+import Layout from "@/components/layout/layout"
 import { socket } from "@/helpers/socket"
 import useSocket from "@/hooks/useSocket"
-import Layout from "@/components/layout/layout"
 
 export default function Home() {
   const [roomIdInput, setRoomIdInput] = useState("")
